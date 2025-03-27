@@ -38,8 +38,16 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
+      - name: Run SonarQube analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar
+
       - name: Build the project
         run: ./gradlew assembleDebug
 
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest
+
+      - name: Generate APK
+        run: ./gradlew assembleRelease
