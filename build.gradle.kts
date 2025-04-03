@@ -15,21 +15,10 @@ sonarqube {
         property("sonar.projectKey", "mobile_application")
         property("sonar.projectVersion", "1.1")
         property("sonar.host.url", "http://127.0.0.1:9000")
-        property("sonar.login", System.getenv("SONAR_TOKEN")) // Use environment variable for security
-           property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.language", "java")
-
-        // Define source and test directories properly
+        property("sonar.sourceEncoding", "UTF-8")
         property("sonar.sources", "app/src/main")
         property("sonar.tests", "app/src/test")
-
-        // Exclude test files from main source indexing
-        property("sonar.exclusions", "**/test/**, **/*Test.java")
-
-        // Ensure test files are indexed correctly
-        property("sonar.test.inclusions", "app/src/test/**/*.java")
-
-        // Point to Java binaries
+        property("sonar.exclusions", "**/test/**, **/*Test.java") 
         property("sonar.java.binaries", "app/build")
     }
 }
