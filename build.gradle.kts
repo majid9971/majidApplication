@@ -8,23 +8,20 @@ sonarqube {
         property("sonar.projectKey", "mobile_application")
         property("sonar.projectVersion", "1.1")
         property("sonar.host.url", "http://localhost:9000")
-        property("sonar.login", System.getenv("SONAR_TOKEN"))
+        property("sonar.login", System.getenv("SONAR_TOKEN") ?: "sqp_82a68053680aa6ce18b6d893bb1aa66f0891a84b")
         property("sonar.sourceEncoding", "UTF-8")
 
-        // ✅ Explicitly set sources and tests to prevent overlap
+        // ✅ Explicit paths - no room for overlap
         property("sonar.sources", "app/src/main/java")
         property("sonar.tests", "app/src/test/java,app/src/androidTest/java")
+        property("sonar.test.inclusions", "**/*Test.java,**/*Test.kt,**/test/**,**/androidTest/**")
+        property("sonar.exclusions", "**/build/**")
 
-        // ✅ Java binaries
+        // ✅ compiled bytecode path
         property("sonar.java.binaries", "app/build/intermediates/javac/debug/classes")
-
-        // ✅ Avoid scanning these files — just in case
-        property("sonar.exclusions", "**/*Test.java,**/test/**,**/androidTest/**,**/build/**")
-
-        // ✅ Make sure only test files are treated as tests
-        property("sonar.test.inclusions", "**/*Test.java,**/test/**,**/androidTest/**")
     }
 }
+
 
 
 
