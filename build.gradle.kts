@@ -11,14 +11,21 @@ sonarqube {
         property("sonar.login", System.getenv("SONAR_TOKEN"))
         property("sonar.sourceEncoding", "UTF-8")
 
-        // Disjoint sets — avoid overlap
+        // Only source code
         property("sonar.sources", "app/src/main/java")
+
+        // Only test code (no overlap)
         property("sonar.tests", "app/src/test/java,app/src/androidTest/java")
 
-        // Optional: exclude AndroidManifest and other non-code files
+        // Java binaries for debug build
+        property("sonar.java.binaries", "app/build/intermediates/javac/debug/classes")
+
+        // Optional: prevent any common files from being indexed twice
         property("sonar.exclusions", "**/AndroidManifest.xml,**/*.gradle.kts,**/test/**,**/*Test.java")
 
-        property("sonar.java.binaries", "app/build/intermediates/javac/debug/classes")
+        // Optional: prevent overlap explicitly
+        property("sonar.test.inclusions", "**/test/**,**/*Test.java,**/androidTest/**")
     }
 }
+
 
