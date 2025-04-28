@@ -63,11 +63,12 @@ jobs:
         run: ls -l app/build/outputs/apk/release/app-release.apk
 
       - name: Install App Center CLI
-        run: npm install -g appcenter-cli
+        run: npm install -g appcenter-cli@latest
 
       - name: Upload APK to App Center
         run: |
           echo "Uploading APK to App Center..."
+          export DEBUG=appcenter-cli:*
           appcenter distribute release \
           --app "majidsiddiqui1997/majidApplication" \
           --token "${{ secrets.APP_CENTER_TOKEN }}" \
