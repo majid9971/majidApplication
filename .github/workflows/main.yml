@@ -38,24 +38,25 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - name: Generate APK (unsigned)
+      # Decode Keystore
+      - name: Download and Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > release-key.jks
+
+      # Set environment variables
+      - name: Set up environment for signing
+        run: |
+          echo "KEYSTORE_FILE=release-key.jks" >> $GITHUB_ENV
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+
+      # Build signed APK
+      - name: Build Signed APK
         run: ./gradlew assembleRelease
 
       - name: Show APK files
         run: find app/build/outputs/ -type f
-
-      - name: Download Keystore File
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
-
-      - name: Sign APK
-        run: |
-          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
-            --ks keystore.jks \
-            --ks-key-alias ${{ secrets.KEY_ALIAS }} \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
-            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
-            --out app/build/outputs/apk/release/app-release-signed.apk \
-            app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Install App Center CLI
         run: npm install -g appcenter-cli
@@ -65,11 +66,11 @@ jobs:
           appcenter distribute release \
           --app "majidsiddiqui1997/majidApplication" \
           --token "${{ secrets.APP_CENTER_TOKEN }}" \
-          --file app/build/outputs/apk/release/app-release-signed.apk \
+          --file app/build/outputs/apk/release/app-release.apk \
           --group "Testers"
 
       - name: Upload APK Artifact (Optional)
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-signed
-          path: app/build/outputs/apk/release/app-release-signed.apk
+          name: app-release
+          path: app/build/outputs/apk/release/app-release.apk
