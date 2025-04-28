@@ -51,6 +51,9 @@ jobs:
 
       - name: Generate APK
         run: ./gradlew assembleRelease
+        
+      - name: Show APK files
+        run: find app/build/outputs/ -type f
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
