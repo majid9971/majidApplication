@@ -41,7 +41,8 @@ jobs:
       # Decode Keystore
       - name: Download and Decode Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > release-key.jks
+          mkdir -p app
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/release-key.jks
 
       # Set environment variables
       - name: Set up environment for signing
