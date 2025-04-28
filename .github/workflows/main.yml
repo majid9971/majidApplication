@@ -64,7 +64,7 @@ jobs:
       - name: Upload APK to App Center
         run: >
           appcenter distribute release
-          --app "${{ secrets.APP_CENTER_OWNER_NAME }}/${{ secrets.APP_CENTER_APP_NAME }}"
-          --token "${{ secrets.APP_CENTER_TOKEN }}"
+          --app "majidsiddiqui1997/majidApplication"
+          --token "f0272ec3da638a277424dd63fb8914c04987e9f7"
           --file app/build/outputs/apk/release/app-release.apk
           --group "Testers"
