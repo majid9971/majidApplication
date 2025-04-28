@@ -59,16 +59,21 @@ jobs:
       - name: Show APK files
         run: find app/build/outputs/ -type f
 
+      - name: Check APK File Permissions
+        run: ls -l app/build/outputs/apk/release/app-release.apk
+
       - name: Install App Center CLI
         run: npm install -g appcenter-cli
 
       - name: Upload APK to App Center
         run: |
+          echo "Uploading APK to App Center..."
           appcenter distribute release \
           --app "majidsiddiqui1997/majidApplication" \
           --token "${{ secrets.APP_CENTER_TOKEN }}" \
           --file app/build/outputs/apk/release/app-release.apk \
-          --group "Testers"
+          --group "Testers" \
+          --debug
 
       - name: Upload APK Artifact (Optional)
         uses: actions/upload-artifact@v4
