@@ -73,7 +73,6 @@ jobs:
           --app "majidsiddiqui1997/majidApplication" \
           --token "${{ secrets.APP_CENTER_TOKEN }}" \
           --file app/build/outputs/apk/release/app-release.apk \
-          --group "Testers" \
           --debug
 
       - name: Upload APK Artifact (Optional)
